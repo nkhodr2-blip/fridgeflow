@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FridgeFlow — dinner-in-30 agent</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>FridgeFlow <span class="badge">Full v1</span></h1>
+      <p>Paste ingredients + a time limit → get a <strong>minute-by-minute cooking plan</strong> with live timers. Hit <em>Start timeline</em>, and tap <em>I'm behind</em> if life happens — it adapts.</p>
+    </div>
+
+    <div class="card">
+      <label for="ingredients">Ingredients (comma or line separated)</label>
+      <textarea id="ingredients" rows="4" placeholder="eggs, spinach, feta, tortillas"></textarea>
+
+      <div class="inline">
+        <div>
+          <label for="timeLimit">Time limit (minutes)</label>
+          <input id="timeLimit" type="number" min="15" max="90" value="30">
+        </div>
+        <div>
+          <label for="mode">Mode</label>
+          <select id="mode">
+            <option value="heuristic" selected>Heuristic (offline)</option>
+            <option value="llm">LLM (optional)</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:12px" class="controls">
+        <button id="generate" class="primary">Generate plan</button>
+      </div>
+    </div>
+
+    <div id="output"></div>
+
+    <footer>
+      Built with FastAPI + vanilla JS. Post a short demo on LinkedIn and tag your build!
+    </footer>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
