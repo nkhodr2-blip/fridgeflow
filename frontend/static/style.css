@@ -1,15 +1,14 @@
 /* === FridgeFlow v2 Theme (Blue + Coral + Yellow) ======================= */
-:root{
-  /* darker blue base */
-  --blue-700:#3C91E6;         /* darker than #4DA6FF */
-  --blue-600:#4DA6FF;
+:root {
+  --blue-700:#2E73B8;         /* darker base blue */
+  --blue-600:#3385CC;         /* lighter accent blue */
   --coral:#FF6B4A;            /* Generate/Start */
   --yellow:#FFD93D;           /* I’m behind */
-  --ink:#1E293B;
-  --muted:#475569;
-  --card:#FFFFFF;
-  --border:rgba(0,0,0,.08);
-  --shadow:0 8px 24px rgba(17,24,39,.12);
+  --ink:#1E293B;              /* dark text */
+  --muted:#475569;            /* muted text */
+  --card:#FFFFFF;             /* card background */
+  --border:rgba(0,0,0,.08);   /* subtle border */
+  --shadow:0 8px 24px rgba(17,24,39,.12); /* drop shadow */
 }
 
 *{box-sizing:border-box}
