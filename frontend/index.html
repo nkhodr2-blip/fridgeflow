@@ -1,47 +1,48 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FridgeFlow — dinner-in-30 agent</title>
-  <link rel="stylesheet" href="/static/style.css">
+  <meta charset="utf-8"/>
+  <title>FridgeFlow</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="/static/style.css"/>
 </head>
 <body>
-  <div class="container">
-    <div class="card">
-      <h1>FridgeFlow <span class="badge">Full v1</span></h1>
-      <p>Paste ingredients + a time limit → get a <strong>minute-by-minute cooking plan</strong> with live timers. Hit <em>Start timeline</em>, and tap <em>I'm behind</em> if life happens — it adapts.</p>
-    </div>
+  <main class="container">
+    <h1>FridgeFlow</h1>
+    <p>Turn what's in your fridge into a step-by-step cooking plan.</p>
 
     <div class="card">
-      <label for="ingredients">Ingredients (comma or line separated)</label>
-      <textarea id="ingredients" rows="4" placeholder="eggs, spinach, feta, tortillas"></textarea>
+      <label for="ingredients"><strong>Ingredients</strong></label>
+      <textarea id="ingredients" rows="4" placeholder="e.g. eggs, spinach, feta, tortillas"></textarea>
 
-      <div class="inline">
+      <div class="row">
         <div>
-          <label for="timeLimit">Time limit (minutes)</label>
-          <input id="timeLimit" type="number" min="15" max="90" value="30">
+          <label for="time_limit"><strong>Time limit (minutes)</strong></label>
+          <input id="time_limit" type="number" min="5" max="120" value="30"/>
         </div>
+
         <div>
-          <label for="mode">Mode</label>
+          <label for="mode"><strong>Mode</strong></label>
           <select id="mode">
-            <option value="heuristic" selected>Heuristic (offline)</option>
-            <option value="llm">LLM (optional)</option>
+            <option value="heuristic">Heuristic (offline)</option>
+            <option value="llm">LLM</option>
           </select>
         </div>
       </div>
 
-      <div style="margin-top:12px" class="controls">
-        <button id="generate" class="primary">Generate plan</button>
-      </div>
+      <button id="generate-btn">Generate plan</button>
+      <button id="start-timeline-btn">Start timeline</button>
+      <button id="behind-btn">I'm behind</button>
+      <button id="reset-btn">Reset</button>
     </div>
 
-    <div id="output"></div>
-
-    <footer>
-      Built with FastAPI + vanilla JS. Post a short demo on LinkedIn and tag your build!
-    </footer>
-  </div>
+    <div id="output" class="card">
+      <h2 id="dish"></h2>
+      <ol id="steps"></ol>
+      <h3>Substitutions</h3>
+      <ul id="subs"></ul>
+    </div>
+  </main>
 
   <script src="/static/app.js"></script>
 </body>
