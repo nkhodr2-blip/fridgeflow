@@ -13,20 +13,24 @@ FRONTEND_DIR = os.path.join(ROOT_DIR, "frontend")
 
 app = FastAPI(title="FridgeFlow — Full")
 
-app.mount("/static", StaticFiles(directory=os.path.join(FRONTEND_DIR,"static")), name="static")
+# Serve static assets for the frontend (CSS/JS)
+app.mount("/static", StaticFiles(directory=os.path.join(FRONTEND_DIR, "static")), name="static")
+
 
 class PlanRequest(BaseModel):
     ingredients: str
     time_limit_min: int = 30
     mode: str = "heuristic"  # "heuristic" or "llm"
 
+
 def parse_ingredients(text: str) -> List[str]:
     items = [re.sub(r"\s+", " ", x.strip().lower()) for x in re.split(r"[\n,]", text) if x.strip()]
     return [x for x in items if x]
 
+
 def guess_dish(ings: List[str]) -> str:
     has_eggs = any("egg" in i for i in ings)
-    has_pasta = any(k in i for i in ings for k in ["pasta","spaghetti","noodle","penne","macaroni"])
+    has_pasta = any(k in i for i in ings for k in ["pasta", "spaghetti", "noodle", "penne", "macaroni"])
     has_tortilla = any("tortilla" in i for i in ings)
     has_spinach = any("spinach" in i for i in ings)
     has_chicken = any("chicken" in i for i in ings)
@@ -40,10 +44,11 @@ def guess_dish(ings: List[str]) -> str:
     if has_rice:                  return "Fried Rice Remix"
     return "Simple Weeknight Skillet"
 
+
 def heuristic_plan(ingredients: str, time_limit_min: int) -> Dict:
     ings = parse_ingredients(ingredients)
     dish = guess_dish(ings)
-    # Clamp duration 15..90 minutes
+    # Clamp duration between 15 and 90 minutes
     total_sec = max(15, min(90, time_limit_min)) * 60
 
     # Allocate blocks
@@ -72,17 +77,24 @@ def heuristic_plan(ingredients: str, time_limit_min: int) -> Dict:
 
     return {"dish": dish, "steps": steps, "substitutions": subs}
 
+
 @app.get("/")
 def index():
     return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
 
+
 @app.post("/api/plan")
 def make_plan(req: PlanRequest):
-    if req.mode == "llm":
+    # helpful debug line (watch Render logs): shows which path is taken
+    print("MODE PATH =>", req.mode)
+
+    if req.mode.lower() == "llm":  # case-insensitive
         try:
             return plan_with_llm(req.ingredients, req.time_limit_min)
         except LLMNotConfigured as e:
             raise HTTPException(status_code=400, detail=str(e))
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"LLM error: {e}")
+
+    # fallback: heuristic planner
     return heuristic_plan(req.ingredients, req.time_limit_min)
