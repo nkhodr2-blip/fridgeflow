@@ -1,4 +1,3 @@
-// Minimal UI logic: fetch a plan and render it, with timeline controls.
 let plan = null;
 let startEpoch = null;
 let driftSec = 0;
@@ -12,26 +11,38 @@ function secondsToMinSec(s) {
 async function generatePlan() {
   const ingredients = $('#ingredients').value;
   const timeLimit = Number($('#time_limit').value || 30);
-  const mode = $('#mode').value; // IMPORTANT: send selected mode
 
-  const resp = await fetch('/api/plan', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      ingredients: ingredients,
-      time_limit_min: timeLimit,
-      mode: mode
-    })
-  });
+  // Force LLM mode
+  const mode = 'llm';
 
-  if (!resp.ok) {
-    const err = await resp.json().catch(() => ({}));
-    alert(`Error: ${resp.status} ${err.detail || resp.statusText}`);
-    return;
+  try {
+    const resp = await fetch('/api/plan', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        ingredients: ingredients,
+        time_limit_min: timeLimit,
+        mode: mode
+      })
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      alert(`Error: ${resp.status} ${err.detail || resp.statusText}`);
+      return;
+    }
+
+    plan = await resp.json();
+
+    // If backend fell back (based on dish label), show the notice
+    const isFallback = typeof plan.dish === 'string' && plan.dish.toLowerCase().includes('fallback');
+    $('#notice').style.display = isFallback ? 'block' : 'none';
+
+    renderPlan(plan);
+  } catch (e) {
+    console.error('Fetch failed', e);
+    alert('Network error. See Console for details.');
   }
-
-  plan = await resp.json();
-  renderPlan(plan);
 }
 
 function renderPlan(p) {
@@ -54,27 +65,26 @@ function startTimeline() {
   driftSec = 0;
 }
 
-function imBehind() {
-  // Add 60s drift to push schedule forward a bit
-  driftSec += 60;
-}
+function imBehind() { driftSec += 60; }
 
 function resetAll() {
-  plan = null;
-  startEpoch = null;
-  driftSec = 0;
+  plan = null; startEpoch = null; driftSec = 0;
+  $('#notice').style.display = 'none';
   $('#dish').textContent = '';
   $('#steps').innerHTML = '';
   $('#subs').innerHTML = '';
   $('#ingredients').value = '';
 }
 
-$('#generate-btn').addEventListener('click', generatePlan);
-$('#start-timeline-btn').addEventListener('click', startTimeline);
-$('#behind-btn').addEventListener('click', imBehind);
-$('#reset-btn').addEventListener('click', resetAll);
+window.addEventListener('DOMContentLoaded', () => {
+  console.log('FridgeFlow ready (LLM-only)');
+  $('#generate-btn').addEventListener('click', generatePlan);
+  $('#start-timeline-btn').addEventListener('click', startTimeline);
+  $('#behind-btn').addEventListener('click', imBehind);
+  $('#reset-btn').addEventListener('click', resetAll);
+});
 
-// Optional: show live countdowns next to steps (simple text tick)
+// Optional live countdowns
 setInterval(() => {
   if (!plan || startEpoch === null) return;
   const now = Date.now();
@@ -86,15 +96,9 @@ setInterval(() => {
     const start = step.start_offset_sec;
     const end = step.start_offset_sec + step.duration_sec;
     let status;
-
-    if (elapsed < start) {
-      status = ` (starts in ${secondsToMinSec(start - elapsed)})`;
-    } else if (elapsed >= start && elapsed < end) {
-      status = ` (time left ${secondsToMinSec(end - elapsed)})`;
-    } else {
-      status = ` (done)`;
-    }
-    // Update line text (label + timing)
+    if (elapsed < start) status = ` (starts in ${secondsToMinSec(start - elapsed)})`;
+    else if (elapsed < end) status = ` (time left ${secondsToMinSec(end - elapsed)})`;
+    else status = ` (done)`;
     lis[i].textContent = `${step.label} — start @ ${secondsToMinSec(step.start_offset_sec)} for ${secondsToMinSec(step.duration_sec)}${status}`;
   }
 }, 1000);
