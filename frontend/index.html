@@ -20,20 +20,17 @@
           <label for="time_limit"><strong>Time limit (minutes)</strong></label>
           <input id="time_limit" type="number" min="5" max="120" value="30"/>
         </div>
-
-        <div>
-          <label for="mode"><strong>Mode</strong></label>
-          <select id="mode">
-            <option value="heuristic">Heuristic (offline)</option>
-            <option value="llm">LLM</option>
-          </select>
-        </div>
       </div>
 
       <button id="generate-btn">Generate plan</button>
       <button id="start-timeline-btn">Start timeline</button>
       <button id="behind-btn">I'm behind</button>
       <button id="reset-btn">Reset</button>
+    </div>
+
+    <!-- Optional notice area to show when LLM falls back -->
+    <div id="notice" class="card" style="display:none; border-left: 4px solid #f59e0b;">
+      <strong>Note:</strong> AI is temporarily unavailable—showing a backup plan instead.
     </div>
 
     <div id="output" class="card">
@@ -44,6 +41,7 @@
     </div>
   </main>
 
-  <script src="/static/app.js"></script>
+  <!-- bump version to avoid cached JS -->
+  <script src="/static/app.js?v=3"></script>
 </body>
 </html>
