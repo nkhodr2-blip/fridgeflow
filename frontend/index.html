@@ -5,10 +5,13 @@
   <title>FridgeFlow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <link rel="stylesheet" href="/static/style.css"/>
+  <!-- Font for the new look -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <main class="container">
-    <h1>FridgeFlow</h1>
+    <h1>🥚 FridgeFlow</h1>
     <p>Turn what's in your fridge into a step-by-step cooking plan.</p>
 
     <div class="card">
@@ -20,13 +23,15 @@
           <label for="time_limit"><strong>Time limit (minutes)</strong></label>
           <input id="time_limit" type="number" min="5" max="120" value="30"/>
         </div>
-      </div>
+      </div> <!-- end .row -->
 
-      <button id="generate-btn">Generate plan</button>
-      <button id="start-timeline-btn">Start timeline</button>
-      <button id="behind-btn">I'm behind</button>
-      <button id="reset-btn">Reset</button>
-    </div>
+      <div class="actions">
+        <button id="generate-btn" class="btn btn-coral">Generate plan</button>
+        <button id="start-timeline-btn" class="btn btn-coral">Start timeline</button>
+        <button id="behind-btn" class="btn btn-yellow">I'm behind</button>
+        <button id="reset-btn" class="btn btn-ghost">Reset</button>
+      </div>
+    </div> <!-- end .card -->
 
     <!-- Optional notice area to show when LLM falls back -->
     <div id="notice" class="card" style="display:none; border-left: 4px solid #f59e0b;">
@@ -42,6 +47,6 @@
   </main>
 
   <!-- bump version to avoid cached JS -->
-  <script src="/static/app.js?v=3"></script>
+  <script src="/static/app.js?v=4"></script>
 </body>
 </html>
