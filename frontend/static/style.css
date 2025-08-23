@@ -1,107 +1,117 @@
-/* === FridgeFlow v2 Theme =============================================== */
-/* Colors: darker blue base, coral actions, yellow 'I'm behind' */
-:root {
-  --blue-700: #3C91E6;         /* darker version of #4DA6FF */
-  --blue-600: #4DA6FF;
-  --coral:    #FF6B4A;
-  --yellow:   #FFD93D;
-  --ink:      #1E293B;         /* dark text on cards */
-  --muted:    #475569;
-  --card:     #FFFFFF;
-  --border:   rgba(0,0,0,.08);
-  --shadow:   0 8px 24px rgba(17,24,39,.12);
+/* === FridgeFlow v2 Theme (Blue + Coral + Yellow) ======================= */
+:root{
+  /* darker blue base */
+  --blue-700:#3C91E6;         /* darker than #4DA6FF */
+  --blue-600:#4DA6FF;
+  --coral:#FF6B4A;            /* Generate/Start */
+  --yellow:#FFD93D;           /* I’m behind */
+  --ink:#1E293B;
+  --muted:#475569;
+  --card:#FFFFFF;
+  --border:rgba(0,0,0,.08);
+  --shadow:0 8px 24px rgba(17,24,39,.12);
 }
 
-* { box-sizing: border-box; }
-html, body { height: 100%; }
-
-body {
-  margin: 0;
-  font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background: var(--blue-700);
-  color: #0F172A;
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--blue-700);
+  color:#0F172A;
 }
 
-.wrap {
-  max-width: 960px;
-  margin: 32px auto;
-  padding: 0 16px;
+.container{
+  max-width:960px;
+  margin:32px auto;
+  padding:0 16px;
+  text-align:left;
 }
 
-.hero {
-  text-align: center;
-  color: #fff;
-  margin-bottom: 20px;
+.container > h1{
+  color:#fff;
+  font-size:40px;
+  margin:8px 0 4px;
+  letter-spacing:.3px;
 }
-.hero h1 {
-  font-size: 40px;
-  margin: 8px 0 4px;
-  letter-spacing: .3px;
-}
-.hero .tagline {
-  opacity: .95;
-  font-weight: 500;
-}
-
-.card {
-  background: var(--card);
-  border-radius: 16px;
-  box-shadow: var(--shadow);
-  padding: 24px;
-  margin-bottom: 16px;
+.container > p{
+  color:#eef6ff;
+  margin-top:0;
+  margin-bottom:16px;
+  opacity:.95;
+  font-weight:500;
 }
 
-label {
-  display: block;
-  font-weight: 600;
-  color: var(--ink);
-  margin: 12px 0 8px;
+.card{
+  background:var(--card);
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  padding:24px;
+  margin-bottom:16px;
 }
 
-textarea, input[type="number"], input[type="text"] {
-  width: 100%;
-  border: 2px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 14px;
-  font-size: 16px;
-  background: #fff;
-  color: var(--ink);
-}
-textarea { min-height: 120px; resize: vertical; }
-textarea:focus, input[type="number"]:focus, input[type="text"]:focus {
-  outline: none;
-  border-color: var(--blue-600);
-  box-shadow: 0 0 0 4px rgba(60,145,230,.12);
+label{
+  display:block;
+  font-weight:600;
+  color:var(--ink);
+  margin:12px 0 8px;
 }
 
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 16px;
+textarea,
+input[type="number"],
+input[type="text"]{
+  width:100%;
+  border:2px solid var(--border);
+  border-radius:12px;
+  padding:12px 14px;
+  font-size:16px;
+  background:#fff;
+  color:var(--ink);
 }
 
-/* Buttons */
-.btn {
-  border: 0;
-  border-radius: 999px;
-  padding: 12px 18px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform .08s ease, box-shadow .2s ease, opacity .2s ease;
+textarea{min-height:120px;resize:vertical}
+textarea:focus,
+input[type="number"]:focus,
+input[type="text"]:focus{
+  outline:none;
+  border-color:var(--blue-600);
+  box-shadow:0 0 0 4px rgba(60,145,230,.12);
 }
-.btn:active { transform: translateY(1px) scale(.995); }
 
-.btn-coral { background: var(--coral); color: #fff; }
-.btn-coral:hover { box-shadow: 0 6px 18px rgba(255,107,74,.3); }
+.row{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+}
 
-.btn-yellow { background: var(--yellow); color:#3a2c00; }
-.btn-yellow:hover { box-shadow: 0 6px 18px rgba(255,217,61,.35); }
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:16px;
+}
 
-.btn-ghost { background: #f3f4f6; color: var(--muted); }
-.btn-ghost:hover { box-shadow: 0 6px 18px rgba(15,23,42,.08); }
+/* Buttons (we style by classes you’ll add in HTML) */
+.btn{
+  border:0;
+  border-radius:999px;
+  padding:12px 18px;
+  font-weight:700;
+  cursor:pointer;
+  transition:transform .08s ease, box-shadow .2s ease, opacity .2s ease;
+}
+.btn:active{transform:translateY(1px) scale(.995)}
 
-/* Lists / output sections */
-.section-title { font-size: 18px; color: var(--ink); margin: 8px 0 12px; }
-.list { margin: 0; padding-left: 16px; color: var(--ink); }
-.list li { margin: 6px 0; }
+.btn-coral{background:var(--coral);color:#fff}
+.btn-coral:hover{box-shadow:0 6px 18px rgba(255,107,74,.3)}
+
+.btn-yellow{background:var(--yellow);color:#3a2c00}
+.btn-yellow:hover{box-shadow:0 6px 18px rgba(255,217,61,.35)}
+
+.btn-ghost{background:#f3f4f6;color:var(--muted)}
+.btn-ghost:hover{box-shadow:0 6px 18px rgba(15,23,42,.08)}
+
+/* Output */
+#dish{margin:.25rem 0 0;color:var(--ink)}
+#steps{margin:.5rem 0 1rem;color:var(--ink);padding-left:20px}
+#subs{margin:.25rem 0 0;color:var(--ink);padding-left:18px}
